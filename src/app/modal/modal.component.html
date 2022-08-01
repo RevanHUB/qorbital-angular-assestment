@@ -1,0 +1,226 @@
+<div id="modal__container" class="modal__container" *ngIf="this.config.modal === true && this.config.modalClass === 'Login'" >
+    <div class="modal__window" [ngStyle]="{ width : '25vw', padding : '50px'}">
+       
+        <h1>Welcome!</h1>
+        <p>Sign in to continue</p>
+        <input type="text" name="username" placeholder="Enter your username" autocomplete='off' #username/>
+        <input type="password" name="password" placeholder="Enter your password" #password/>
+        <div class="buttonsCont">
+            <button id="exit_button" class="material-icons"  (click)="this.hideModal()">chevron_left</button>
+            <button class="sign_in" (click)="this.checkLogin(username.value, password.value)">Log In <span class="material-icons">chevron_right</span></button>
+        </div>
+    </div>
+</div>
+
+
+<div id="modal__container" class="modal__container" *ngIf="this.config.modal === true && this.config.modalClass === 'Add User'" >
+    <div class="modal__window" >
+        
+        <h1>Add users!</h1>
+        <input type="text" name="username" placeholder="Username" autocomplete="off" #usernameAdd/>
+        <input type="password" name="password"  placeholder="Password" autocomplete="off" #passwordAdd/>
+        <input type="text" name="position"  placeholder="Position" autocomplete="off" #positionAdd/>
+        <input type="text" name="Group"  placeholder="Group" autocomplete="off" value="QOrbital" readonly #groupAdd/>
+        <div class="buttonsCont">
+            <button id="exit_button" class="material-icons"  (click)="this.hideModal()">cancel</button>
+            <button type="submit" class="continue" (click)="this.addUser(usernameAdd.value, passwordAdd.value,positionAdd.value,groupAdd.value)"><span class="material-icons">check</span></button>
+        </div>
+    </div>
+</div>
+
+<div id="modal__container" class="modal__container" *ngIf="this.config.modal === true && this.config.modalClass === 'Add Task'">
+    <div class="modal__window" >
+        <h1>Add task!</h1>
+        <input type="text" name="main" placeholder="Main title" autocomplete="off" #mainAdd/>
+        <input type="desc" name="desc"  placeholder="Description" autocomplete="off" #descriptionAdd/>
+        <input type="number" name="priority"  placeholder="Priority" autocomplete="off" min="1" max="5" #priorityAdd/>
+
+        <input type="date" name="date"  placeholder="To finish" autocomplete="off" #dateAdd/>
+        <input type="text" name="Group"  placeholder="Group" autocomplete="off" value="QOrbital" readonly #groupAdd/>
+        <div class="buttonsCont">
+            <button id="exit_button" class="material-icons"  (click)="this.hideModal()">arrow_back</button>
+            <button type="submit" class="continue" (click)="this.addTask(mainAdd.value, descriptionAdd.value,this.config.userLogged.username ,priorityAdd.value,dateAdd.value ,groupAdd.value);  this.hideModal(); "><span class="material-icons">check</span></button>
+        </div>
+    </div>
+</div>
+
+<div id="modal__container" class="modal__container" *ngIf="this.config.modal === true && this.config.modalClass === 'Change User Options'">
+    <div class="modal__window__right" >
+        <h1>What do you want to do?</h1>
+        <p>{{this.config.employees.selected}}</p>
+        <input type="text" name="main" placeholder="Change Username"  *ngIf="this.config.userLogged.id === 0 || this.config.userLogged.id === this.config.employees.selected" autocomplete="off" #mainAdd/>
+        <input type="password" name="main" placeholder="Change Password" *ngIf="this.config.userLogged.id === 0 || this.config.userLogged.id === this.config.employees.selected" autocomplete="off" #mainAdd/>
+        <input type="desc" name="desc"  placeholder="Change Role" *ngIf="this.config.userLogged.id === 0" autocomplete="off" #descriptionAdd/>
+        <input type="number" name="priority"  placeholder="Change Group" autocomplete="off" min="1" max="5" #priorityAdd/>
+       
+        
+        <div class="buttonsCont">
+            <button id="exit_button"   (click)="this.hideModal()">Skip</button>
+            <button type="submit" class="continue" ><span class="material-icons">check</span></button>
+        </div>
+
+        <div class="option_buttons">
+            <div tabindex="99"> Delete user: 
+            <button type="submit" class="continue" ><span class="material-icons">delete</span></button></div>
+        </div>
+    </div>
+</div>
+
+<!-- user changes -->
+
+
+<div id="modal__container" class="modal__container" *ngIf="this.config.modal === true && this.config.modalClass === 'Change User Options'"   >
+    <div class="modal__window__right">
+        <h1 #Title>What do you want to do?</h1>
+        <Label for="username" > Change Username
+            <input
+                placeholder="Username" 
+                name="username"
+                autocomplete="off"
+                (change)="
+                    this.changeToApplied(buttonSkip, Title); 
+                    this.usernameChanges(this.config.employees.selected, usernameChange.value)"
+                #usernameChange>
+               
+        </Label>
+        <Label for="password" *ngIf="this.config.userLogged.id === 0 || this.config.userLogged.id === this.config.employees.selectedId"> Change Password
+            <input 
+                type="password" 
+                name="password" 
+                placeholder="Change Password" 
+                autocomplete="off" 
+                #passwordChange 
+                (change)="
+                    this.changeToApplied(buttonSkip, Title);
+                    this.passwordChanges(this.config.employees.selected, passwordChange.value)"
+            />
+        </Label>
+        <Label for="role" *ngIf="this.config.userLogged.id === 0 && this.config.userLogged.id === this.config.employees.selected && this.config.employees.selected != 0"> Change Role 
+            <input 
+                type="text" 
+                name="role"  
+                placeholder="Change Role" 
+                min="1" 
+                max="5" 
+                value=""
+                #RoleChange 
+                (change)="
+                    this.changeToApplied(buttonSkip, Title); 
+                    this.roleChanges(this.config.tasks.selected, RoleChange.value)"/>
+        </Label>   
+        <Label for="status" *ngIf="this.config.userLogged.id === 0 || this.config.userLogged.id === this.config.employees.selected"> Change Image
+            <input 
+            type="text" 
+            name="avatar"  
+            autocomplete="off"  
+            placeholder="Introduce Url"
+            #avatarChange
+            (change)="
+                    this.changeToApplied(buttonSkip, Title);
+                    this.avatarChanges(this.config.employees.selected, avatarChange.value)"/>
+        </Label>     
+        
+        <div class="buttonsCont">
+            <button id="exit_button"   (click)=" this.hideModal()" #buttonSkip>Exit</button>
+        </div>
+
+        <div class="option_buttons">
+        <Label for="delete" *ngIf="this.config.userLogged.id === 0 && this.config.employees.selected != 0"> Delete user 
+            <button class="continue" name="delete" (click)="this.deleteUser(this.config.employees.selected); this.hideModal()" ><span class="material-icons">delete</span></button>
+        </Label>
+        </div>
+    </div>
+</div>
+<!-- task changes  -->
+
+
+<div id="modal__container" class="modal__container" *ngIf="this.config.modal === true && this.config.modalClass === 'Change Tasks Options'"  >
+    <div class="modal__window__right" >
+        <h1 #Title>What do you want to do?</h1>
+        <Label for="status"> Assign to: 
+            <div class="assignContainer">
+
+                <button 
+                class="assignEmployee" 
+                *ngFor="let employee of this.employees[0]"
+               
+                (click)="
+                    this.debugIncluded();
+                    this.changeToApplied(buttonSkip, Title); 
+                    this.assignTask(this.config.tasks.selected, this.employee.username , this.employee.id, this.employee.avatar)
+                "
+                > <img src={{employee.avatar}}>{{employee.username}} </button>
+                <button 
+                class="assignEmployee" 
+                
+               
+                (click)="
+                    this.debugIncluded();
+                    this.changeToApplied(buttonSkip, Title); 
+                    this.clearAssignement(this.config.tasks.selected)
+                "
+                > <img src="https://neuroqualyfam.usal.es/wp-content/uploads/sites/51/2019/12/default-user-image.png"> Clear </button>
+            </div>
+            
+        </Label>
+        <Label for="status"> Change Status 
+            <select 
+                placeholder="Change Status" 
+                name="status"
+                (change)="
+                    this.changeToApplied(buttonSkip, Title); 
+                    this.taskStatusChange(this.config.tasks.selected, statusChange.value)"
+                #statusChange>
+                <option value="Done">Done</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+        </Label>
+        <Label for="desc"> Change Description 
+            <input 
+                type="text" 
+                name="desc" 
+                placeholder="Change Description" 
+                autocomplete="off" 
+                #descChange 
+                (change)="
+                    this.changeToApplied(buttonSkip, Title);
+                    this.taskDescChange(this.config.tasks.selected, descChange.value)"
+            />
+        </Label>
+        <Label for="status"> Change Priority 
+            <input 
+                type="number" 
+                name="priority"  
+                placeholder="Change Priority" 
+                min="1" 
+                max="5" 
+                value=""
+                #priorityAdd 
+                (change)="
+                    this.changeToApplied(buttonSkip, Title); 
+                    this.taskPriorityChange(this.config.tasks.selected, priorityAdd.value)"/>
+        </Label>   
+        <Label for="status"> Change Estimated Date 
+            <input 
+            type="date" 
+            name="toFinish"  
+            autocomplete="off"  
+            #toFinishAdd 
+            (change)="
+                    this.changeToApplied(buttonSkip, Title);
+                    this.taskDateChange(this.config.tasks.selected, toFinishAdd.value)"/>
+        </Label>     
+        
+        <div class="buttonsCont">
+            <button id="exit_button"   (click)=" this.hideModal()" #buttonSkip>Exit</button>
+            <!-- <button type="submit" class="continue" ><span class="material-icons">check</span></button> -->
+        </div>
+
+        <div class="option_buttons">
+        <Label for="delete"> Delete task 
+            <button class="continue" name="delete" (click)="this.deleteTask(this.config.tasks.selected); this.hideModal()" ><span class="material-icons">delete</span></button>
+        </Label>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+
+<!-- Online Menu  -->
+<div class="nav" *ngIf="this.config.userLogged.id != null && this.config.userLogged.online == true" [ngStyle]="{'background-color': (this.config.theme.light === true)? '#fff': 'rgb(255, 237, 243)', color: (this.config.theme.light === true)? 'black': '#1E2140 !important'}">
+    <div class="QOrbital__logo"></div>
+    <div class="menu" >
+        <button id={{this.menu.showName}} *ngFor="let menu of menu" [ngClass]="{'actived_button': this.menu.active === this.menu.showName}" (click)="
+            (this.menu.showName === 'Teams')? teams() : void('Teams');
+            (this.menu.showName === 'Meeting')? chat() : void('Meeting');
+            (this.menu.showName === 'Settings')? settings() : void('Settings');
+            this.menu.active = this.menu.showName;
+        " 
+        [routerLink]="
+        this.menu.showName === 'Teams'?['employees']:null || this.menu.showName === 'Meeting'?['meeting']:null || this.menu.showName === 'Settings'?['settings']:null"
+        >{{menu.showName}}</button>
+    </div>
+    <div class="user__show" tabindex="0" *ngIf="this.config.userLogged.id != null && this.config.userLogged.online == true">
+        <img alt="" src="{{config.userLogged.avatar}}">
+        <div id="theme" (click)="this.changeTheme()"><span class="material-icons">{{(this.config.theme.light === true)? 'sunny' : 'nightlight'}}</span></div>
+        <button id="logout" (click)="this.logout(this.config.userLogged.username , this.config.userLogged.id); this.signOut(); "><span class="material-icons">logout</span></button>
+    </div>
+</div>
+
+<!-- Offline Menu  -->
+<div class="nav" *ngIf="this.config.userLogged.id === null && this.config.userLogged.online == false" [ngStyle]="{'background-color': (this.config.theme.light === true)? '#fff': 'rgb(255, 237, 243)', color: (this.config.theme.light === true)? 'black': '#1E2140'}">
+    <div class="QOrbital__logo"></div>
+    <div class="menu" >
+     
+    </div>
+    <div class="user__show" tabindex="0" *ngIf="this.config.userLogged.id === null && this.config.userLogged.online === false">
+        <div id="theme" (click)="this.changeTheme()"><span class="material-icons">{{(this.config.theme.light === true)? 'sunny' : 'nightlight'}}</span></div>
+        <button id="logout" (click)="this.showModal(); this.setModal('Login')"><span class="material-icons">person</span></button>
+        
+    </div>
+</div>

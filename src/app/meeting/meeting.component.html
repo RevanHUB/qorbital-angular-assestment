@@ -1,0 +1,109 @@
+<div id="meeting" *ngIf="this.config.menuController.chatBool === true" [ngStyle]="{'background-color': (this.config.theme.light === true)? '#fff': 'rgb(255, 237, 243)', color: (this.config.theme.light === true)? 'black': '#1E2140'}" >
+   
+    <div class="tasksContainer" [ngStyle]="{'background-color': (this.config.theme.light === true)? '#fff': 'rgb(255, 237, 243)', color: (this.config.theme.light === true)? 'black': '#1E2140'}">
+        <div class="head">
+         
+            <h3>Tasks</h3>
+        
+        </div>
+        <div class="tasks__grid" >
+            <div *ngFor="let task of tasks[0]" class="task__wrapper" #task >
+                <div class="task__head">                       
+                    <span class="material-icons" *ngIf="this.task.status === 'Done'"> 
+                        verified
+                    </span>
+                    <span class="material-icons" *ngIf="this.task.status === 'In Progress'"> 
+                           update
+                    </span>
+                    <span class="material-icons" *ngIf="this.task.status === 'Cancelled'"> 
+                           error
+                    </span>
+                    {{task.main}}
+                </div>
+                <p class="section"><span class="material-icons">folder</span> {{task.description}}</p>
+                <p class="creator"  *ngFor="let employee of employees[1]"  >
+                    <span class="section userCreator" *ngIf="(this.employee.username === task.creator)"  >
+                        <img src={{this.employee.avatar}}/>
+                        <h2><b>{{this.employee.username}}</b><small>{{this.employee.position}}</small>  </h2>
+                    </span>
+                </p>
+               
+             
+                <p class="toFinish section"><span class="material-icons">calendar_month</span>{{task.toFinish}}</p>
+               
+                <div class="priority__container">
+                    <div class="priority__visual">
+                        <div class="priority__bar"[ngStyle]="{
+                        width: (task.priority === 5)
+                        ? '100%': (task.priority === 4)? '80%' 
+                        : (task.priority === 3)? '60%'
+                        : (task.priority === 2) ? '40%'
+                        : (task.priority === 1)? '20%'
+                        :  null, 
+                        backgroundColor :  (task.priority === 5)
+                        ? 'red': (task.priority === 4)
+                        ? '#31B0AC' : (task.priority === 3)
+                        ? '#F1C948': (task.priority === 2) 
+                        ? '#FF6403': (task.priority === 1)
+                        ? 'gray':  null }"></div>
+                    </div>
+                </div>
+
+                <p *ngIf="task.assigned.avatar != null" class="section assigned">
+                    <b>Assigned to: </b>
+                    <span *ngIf="task.assigned.avatar != null">
+                        
+                     
+                        <img preload src={{task.assigned.avatar}} />
+                  
+                    </span>
+                </p>
+                <div class="buttons__in__task">
+                    <button 
+                        class="more" 
+                        *ngIf="this.config.userLogged.username === task.creator"  
+                        (click)="
+                            this.showModal(); 
+                            this.setModal('Change Tasks Options'); 
+                            this.config.modalSelectedId = task.id; 
+                            this.config.tasks.selected = task.id;
+                            this.config.tasks.assigned = task.assigned;
+                            " ><span class="material-icons">more_vert</span></button>
+                </div>    
+        </div>
+        <div class="buttons__overlay">
+                <button id="interface__button" class="material-icons" (click)="this.showModal(); this.setModal('Add Task');" >add_task</button>
+        </div>
+            
+    </div>
+    </div>
+   
+    <div class="meetingContainer">
+        
+        <div class="head">
+            <h3>Meeting Chat</h3>
+            <p>{{this.online}} <span class="material-icons">groups</span></p>
+           
+        </div>
+        <div class="chat__Container">
+            <div class="chat__head">
+                <h4>{{this.config.userLogged.group}}</h4>
+            </div>
+            <ul >
+                <li *ngFor="let message of this.log_local" [ngClass]="this.message.id" >
+                    <h5><img src={{this.message.userAvatar}} /> </h5>
+                    <b>{{this.message.userCreator}} </b>
+                    <span>{{this.message.value}}</span>
+                    <small>{{this.message.time}}</small>
+                </li>
+            </ul>
+            <div class="chatTool" >
+                <div class="text__sender" >
+                    <input type="text" name="MessageBox" autocomplete="off" #MessageBox [value]=" "(keyup.enter)="this.useNgxService(this.MessageBox.value); this.clearChat(this.MessageBox)" (dragenter)="this.useNgxService(this.MessageBox.value); " />
+                    <button > <span class="material-icons">reply</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ </div>   

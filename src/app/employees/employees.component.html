@@ -1,0 +1,25 @@
+<div class="views" *ngIf="this.config.userLogged.id != null && this.config.userLogged.online == true" [ngStyle]="{'background-color': (this.config.theme.light === true)? '#fff': 'rgb(255, 237, 243)', color: (this.config.theme.light === true)? 'black': '#1E2140'}">
+    <div id="teams"  >
+        <div class="groupInfo"> 
+            <div class="groupFirst"></div>
+            <div class="groupButtons">
+                <button *ngIf="this.config.userLogged.id === 0 && this.config.userLogged.position == 'Administrator'" (click)="this.showModal(); this.setModal('Add User')"> <span class="material-icons"> person_add</span></button>
+            </div>
+        </div>
+       
+
+        <div class="employees__" [ngStyle]="{'background-color': (this.config.theme.light === true)? '#fff': 'rgb(255, 237, 243)', color: (this.config.theme.light === true)? 'black': '#1E2140'}">
+  
+            <div *ngFor="let employees of employees[0]" class="{(employees.online === 'true')? 'online': 'offline'; }} employee" >
+                <picture><img alt="portrait" src="{{employees.avatar}}"/>{{employees.username}}</picture>
+                <p *ngIf="this.employees.online === false" class="red"> <span class='material-icons'>wifi_off</span> Offline</p>
+                <p *ngIf="this.employees.online === true" class="green"> <span class='material-icons'>wifi</span> Online</p>
+                <p class="{{(employees.position === 'Administrator')? 'green': null}}"><span class="material-icons">badge</span>{{employees.position}}</p>
+                <p><span class="material-icons">group_work</span>{{employees.group}}</p>
+                <button *ngIf="this.config.userLogged.id === 0 && this.config.userLogged.position == 'Administrator'" id="interface__button" class="material-icons"  (click)="this.showModal(); this.setModal('Change User Options'); this.config.modalSelectedId = employees.id;  this.config.employees.selected = employees.id ;">more_horiz</button>
+            </div>
+           
+        </div>
+       
+    </div>
+   

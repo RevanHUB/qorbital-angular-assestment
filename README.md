@@ -5,8 +5,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 It's made as a technical assestment for QOrbital.
 
 ## Preview
-
+### User Creation
 ![login_usercreation_userchanges](https://user-images.githubusercontent.com/84904766/182151062-47516c9c-3f1a-4119-b1af-d06188fdcbd3.gif)
+
+### Task creation / Chat and Real Time Testing
 ![chat](https://user-images.githubusercontent.com/84904766/182154397-93644263-480e-41eb-a10d-a930ff01703a.gif)
 
 ## Uses

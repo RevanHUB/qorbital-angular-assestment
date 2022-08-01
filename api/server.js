@@ -44,8 +44,7 @@ io.on('connection', (socket) => {
             minute: '2-digit',
           });
 
-        // let time = withPmAm.getHours() + ':' + withPmAm.getMinutes();
-        console.log(time)
+
         socket.in("room").emit("distribution", {
             value : value.msg,
             id: socket.id,
@@ -145,10 +144,10 @@ app.get('/createuser/:username&:password&:position&:group', cors(), (req, res) =
     let group = req.params.group;
     console.log(position);
     if (position == 'Administrator') {
-        console.log("Es igual");
+        console.log("No se puede crear otro administrador");
         res.send("No se ha introducido el valor");
     } else {
-        console.log("Es diferente")
+        console.log("Se ha creado el usuario")
             let check = employees.push({
             id: employees.length,
             avatar: 'https://neuroqualyfam.usal.es/wp-content/uploads/sites/51/2019/12/default-user-image.png',
@@ -201,7 +200,6 @@ app.get('/tasks/', cors(), (req, res) => {
     (check === undefined)
     ? res.send("There are no results. ")
     : res.send(check);
-    // console.log("requesting data, done")
 });
 
 app.get('/createtask/:title&:desc&:creator&:date&:priority&:group', cors(), (req, res) => {
@@ -263,27 +261,20 @@ app.get('/assignToTask/:idTask&:username&:idUser/*', cors(), (req, res) => {
     let idUser = req.params.idUser;
     let username =  req.params.username;
     let avatar =  req.params[0];
-    console.log(avatar);
-    let isIncluded;
+
 
     console.log(tasks[idTask].assigned);
-    
-    // let check = tasks[idTask].find(({asigned}) => asigned.username === username );
+
    
      tasks[idTask].assigned = {};
-    //    let check = tasks[idTask].assigned.({
-    //         id: idUser,
-    //         username: username, 
-    //         avatar: avatar,
-    //     });
+
         tasks[idTask].assigned.id = idUser;
         tasks[idTask].assigned.username = username;
         tasks[idTask].assigned.avatar = avatar;
         console.log("added user to task")
         console.log(tasks[idTask].assigned);
         res.send("Assigned " + username + "");
-  
-    // console.log(check)
+
 });
 
 app.get('/clearAssignement/:idTask', cors(), (req, res) => {
